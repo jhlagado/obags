@@ -15,7 +15,7 @@ test('make count up to 40 and print each number', ()=>{
 
     const fi = new CBFromIterator(iterator);
     const m = new CBMap(fi, double);
-    const fe = new CBForEach(m, printOp);
+    new CBForEach(m, printOp);
 
     expect(printOp).toHaveBeenCalledTimes(expectedLength);
 })

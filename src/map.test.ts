@@ -21,5 +21,5 @@ test('make count up to 40 and print each number', () => {
         (source) => new CBForEach(source, printOp)
     );
 
-    expect(printOp).toHaveBeenCalledTimes(3);
+    expect(printOp).toHaveBeenCalledTimes(expectedLength);
 })

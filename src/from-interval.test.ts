@@ -1,11 +1,9 @@
-import { CB } from "./common";
 import { CBForEach } from "./for-each";
 import { CBFromInterval } from "./from-interval";
 import { pipe } from "./pipe";
 
 test('interval(100) sends 5 times then we dispose it', (done) => {
     const expected = [0, 1, 2, 3, 4];
-    const expectedLength = expected.length;
 
     const fi = new CBFromInterval(100);
 
