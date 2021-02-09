@@ -1,5 +1,5 @@
 import { CB } from "./common";
-import { CBTalkback } from "./talkback";
+import { CBProxy } from "./proxy";
 
 export class CBTake implements CB {
     source!: CB;
@@ -14,49 +14,50 @@ export class CBTake implements CB {
         this.max = max;
     }
 
+    forSink = new CBProxy(this, {
+        init(this: CBTake, d: any) {
+            if (this.taken < this.max) { this.sourceTalkback?.run(d); }
+        },
+        run(this: CBTake, d: any) {
+            if (this.taken < this.max) { this.sourceTalkback?.run(d); }
+        },
+        destroy(this: CBTake, d: any) {
+            this.end = true;
+            this.sourceTalkback?.destroy(d);
+
+        }
+    })
+
+    forSource = new CBProxy(this, {
+
+        init(this: CBTake, srctb: CB) {
+            this.sourceTalkback = srctb;
+            this.sink!.init(this.forSink)
+        },
+
+        run(this: CBTake, d: any) {
+            if (this.taken < this.max) {
+                this.taken++;
+                this.sink?.run(d);
+                if (this.taken === this.max && !this.end) {
+                    this.end = true
+                    this.sourceTalkback?.destroy();
+                    this.sink!.destroy();
+                }
+            }
+        },
+
+        destroy() { }
+
+    })
+
     init(sink: CB) {
         this.taken = 0;
         this.sourceTalkback;
         this.end = false;
         this.sink = sink;
 
-        const talkback = new CBTalkback(this, {
-            init(d: any) {
-                if (this.taken < this.max) { this.sourceTalkback.run(d); }
-            },
-            run(d: any) {
-                if (this.taken < this.max) { this.sourceTalkback.run(d); }
-            },
-            destroy(d:any) {
-                this.end = true;
-                this.sourceTalkback.destroy(d);
-
-            }
-        })
-
-        const tbsrc = new CBTalkback(this, {
-
-            init(srctb: CB) {
-                this.sourceTalkback = srctb;
-                this.sink.init(talkback)
-            },
-
-            run(d: any) {
-                if (this.taken < this.max) {
-                    this.taken++;
-                    this.sink.run(d);
-                    if (this.taken === this.max && !this.end) {
-                        this.end = true
-                        this.sourceTalkback.destroy();
-                        this.sink.destroy();
-                    }
-                }
-            },
-
-            destroy() { }
-
-        })
-        this.source.init(tbsrc)
+        this.source.init(this.forSource)
     }
 
     run() { }

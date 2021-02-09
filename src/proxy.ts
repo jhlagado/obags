@@ -1,10 +1,10 @@
 import { CB } from "./common";
 
-export class CBTalkback implements CB {
-    callbacks: any;
+export class CBProxy implements CB {
+    callbacks: CB;
     owner: any;
 
-    constructor(owner: CB, callbacks: any) {
+    constructor(owner: CB, callbacks: CB) {
         this.callbacks = {
             init: callbacks.init.bind(owner),
             run: callbacks.run.bind(owner),

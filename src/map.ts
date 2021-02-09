@@ -1,7 +1,7 @@
-import { CB, Mapper } from "./common";
-import { CBTalkback } from "./talkback";
+import { CB, Mapper, SinkCB } from "./common";
+import { CBProxy } from "./proxy";
 
-export class CBMap implements CB {
+export class CBMap implements SinkCB {
     source: any;
     mapper: Mapper;
     sink: CB | undefined;
@@ -13,9 +13,9 @@ export class CBMap implements CB {
 
     init1(sink: CB) {
         this.sink = sink;
-        this.source?.init(new CBTalkback(this, {
-            init(d: any) {
-                this.sink.init(d)
+        this.source?.init(new CBProxy(this, {
+            init(this: CBMap, d: any) {
+                this.sink?.init(d)
             },
             run(d: any) {
                 this.run(d)

@@ -4,6 +4,10 @@ export interface CB {
     destroy(err?: string): void;
 }
 
+export interface SinkCB {
+    source: CB;
+}
+
 export type Operation = (value: string) => void;
 export type Mapper = (value: any) => any;
 

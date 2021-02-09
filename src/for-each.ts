@@ -6,12 +6,12 @@ export class CBForEach implements CB {
     talkback: CB | undefined;
 
     constructor(source: CB, operation: Operation) {
-        this.operation = operation;
         this.source = source;
+        this.operation = operation;
         this.source?.init(this);
     }
-    
-    init(d?:any) {
+
+    init(d?: any) {
         this.talkback = d;
         this.talkback?.run();
     }
