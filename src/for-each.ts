@@ -1,11 +1,11 @@
-import { Operation, CB } from "./common";
+import { Effect, CB } from "./common";
 
 export class CBForEach implements CB {
-    operation: Operation;
+    operation: Effect;
     source: CB | undefined;
     talkback: CB | undefined;
 
-    constructor(source: CB, operation: Operation) {
+    constructor(source: CB, operation: Effect) {
         this.source = source;
         this.operation = operation;
         this.source?.init(this);

@@ -8,7 +8,7 @@ export interface SinkCB {
     source: CB;
 }
 
-export type Operation = (value: string) => void;
+export type Effect = (value: string) => void;
 export type Mapper = (value: any) => any;
 
-export type SinkFunc = (source: CB) => CB;
+export type SinkFactory = (source: CB) => CB;
