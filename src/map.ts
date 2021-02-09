@@ -1,5 +1,4 @@
 import { CB, Mapper, SinkCB } from "./common";
-import { CBProxy } from "./proxy";
 
 export class CBMap implements SinkCB {
     source: any;
@@ -9,21 +8,6 @@ export class CBMap implements SinkCB {
     constructor(source: CB, mapper: Mapper) {
         this.source = source;
         this.mapper = mapper;
-    }
-
-    init1(sink: CB) {
-        this.sink = sink;
-        this.source?.init(new CBProxy(this, {
-            init(this: CBMap, d: any) {
-                this.sink?.init(d)
-            },
-            run(d: any) {
-                this.run(d)
-            },
-            destroy(d: any) {
-                this.destroy(d)
-            },
-        }));
     }
 
     init(d: CB) {

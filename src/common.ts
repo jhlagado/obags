@@ -10,5 +10,6 @@ export interface SinkCB {
 
 export type Effect = (value: string) => void;
 export type Mapper = (value: any) => any;
+export type Reducer = (acc:any, value: any) => any;
 
 export type SinkFactory = (source: CB) => CB;
